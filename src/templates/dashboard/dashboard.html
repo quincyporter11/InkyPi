@@ -53,7 +53,100 @@
             align-items: center;
             justify-content: center;
 
-            font-size: clamp(3rem, 10vw, 8rem);
+           /* font-size: clamp(3rem, 10vw, 8rem);*/
+        }
+
+        .weather-page {
+            width: 100%;
+            height: 100%;
+            padding: 3rem;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 2rem;
+        }
+
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .weather-header h1 {
+            margin: 0;
+            font-size: 3rem;
+        }
+
+        .weather-header .date {
+            font-size: 1.5rem;
+        }
+
+        .current {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .current img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .temperature {
+            font-size: 4rem;
+            font-weight: bold;
+        }
+
+        .feels-like {
+            font-size: 1.25rem;
+        }
+
+        .hourly {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .hour {
+            flex: 1;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            gap: 0.5rem;
+
+            font-size: 1rem;
+        }
+
+        .hour img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .forecast {
+            display: flex;
+            justify-content: space-around;
+            margin-top: auto;
+        }
+
+        .forecast-day {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            gap: 0.5rem;
+
+            font-size: 1.25rem;
+        }
+
+        .forecast-day img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -62,7 +155,7 @@
 
     <main class="pages">
         <section class="page">
-            Weather
+            {% include "dashboard/pages/weather.html" %}
         </section>
 
         <section class="page">
