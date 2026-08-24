@@ -195,6 +195,8 @@ def update_plugin_instance(instance_name):
         if plugin_settings:  # Only update if there are actual plugin settings
             plugin_instance.settings = plugin_settings
 
+            plugin_instance.latest_refresh_time = None
+
         device_config.write_config()
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500

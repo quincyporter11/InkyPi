@@ -25,6 +25,7 @@ from werkzeug.serving import is_running_from_reloader
 from config import Config
 from display.display_manager import DisplayManager
 from refresh_task import RefreshTask
+from dashboard_refresh_task import DashboardRefreshTask
 from blueprints.main import main_bp
 from blueprints.settings import settings_bp
 from blueprints.plugin import plugin_bp
@@ -65,6 +66,13 @@ device_config = Config()
 display_manager = DisplayManager(device_config)
 refresh_task = RefreshTask(device_config, display_manager)
 
+# Test for touch screen dashboard #
+dashboard_refresh_task = DashboardRefreshTask(
+    device_config,
+    playlist_name="Touchscreen",
+    check_interval=60
+)
+
 load_plugins(device_config.get_plugins())
 
 # Store dependencies
@@ -90,6 +98,9 @@ if __name__ == '__main__':
 
     # start the background refresh task
     refresh_task.start()
+
+    # test touchscreen dashboard refresh
+    dashboard_refresh_task.start()
 
     # display default inkypi image on startup
     if device_config.get_config("startup") is True:
@@ -117,3 +128,4 @@ if __name__ == '__main__':
         serve(app, host="0.0.0.0", port=PORT, threads=1)
     finally:
         refresh_task.stop()
+        dashboard_refresh_task.stop()
