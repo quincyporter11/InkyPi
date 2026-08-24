@@ -102,6 +102,45 @@
             object-fit: fill;
             object-position: center;
         }
+
+        .page-indicators {
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%);
+
+            display: flex;
+            gap: 10px;
+
+            padding: 8px 12px;
+
+            z-index: 100;
+        }
+
+        .page-indicators.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .page-indicator {
+            width: 10px;
+            height: 10px;
+
+            margin: 0;
+            padding: 0;
+
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+
+            background: transparent;
+
+            cursor: pointer;
+        }
+
+        .page-indicator.active {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
     </style>
 </head>
 
@@ -132,6 +171,16 @@
     {% endfor %}
 
 </main>
+
+<nav class="page-indicators" aria-label="Dashboard pages">
+    {% for page in pages %}
+        <button
+            class="page-indicator{% if loop.first %} active{% endif %}"
+            data-page="{{ loop.index0 }}"
+            aria-label="Go to {{ page.instance_name }}"
+        ></button>
+    {% endfor %}
+</nav>
 
 <script>
     const IMAGE_REFRESH_INTERVAL = 60_000;
@@ -194,6 +243,86 @@
         refreshPluginImages,
         IMAGE_REFRESH_INTERVAL
     );
+
+    const pagesContainer = document.querySelector(".pages");
+    const indicators = document.querySelectorAll(".page-indicator");
+
+    function updatePageIndicator() {
+        const pageWidth = pagesContainer.clientWidth;
+
+        if (pageWidth === 0) {
+            return;
+        }
+
+        const currentPage = Math.round(
+            pagesContainer.scrollLeft / pageWidth
+        );
+
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle(
+                "active",
+                index === currentPage
+            );
+        });
+    }
+
+    function showIndicators() {
+        indicatorContainer.classList.remove("hidden");
+
+        clearTimeout(indicatorHideTimer);
+
+        indicatorHideTimer = setTimeout(() => {
+            indicatorContainer.classList.add("hidden");
+        }, 3000);
+    }
+
+    pagesContainer.addEventListener(
+        "scroll",
+        () => {
+            updatePageIndicator();
+            showIndicators();
+        },
+        { passive: true }
+    );
+
+    pagesContainer.addEventListener(
+        "pointerdown",
+        showIndicators,
+        { passive: true }
+    );
+
+    const indicatorContainer =
+        document.querySelector(".page-indicators");
+
+    let indicatorHideTimer;
+
+    function showIndicators() {
+        indicatorContainer.classList.remove("hidden");
+
+        clearTimeout(indicatorHideTimer);
+
+        indicatorHideTimer = setTimeout(() => {
+            indicatorContainer.classList.add("hidden");
+        }, 3000);
+    }
+
+    indicators.forEach((indicator) => {
+        indicator.addEventListener("click", () => {
+            const pageIndex = Number(
+                indicator.dataset.page
+            );
+
+            pagesContainer.scrollTo({
+                left: pageIndex * pagesContainer.clientWidth,
+                behavior: "smooth"
+            });
+
+            showIndicators();
+        });
+    });
+
+    showIndicators();
+
 </script>
 
 </body>
