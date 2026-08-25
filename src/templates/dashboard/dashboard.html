@@ -192,61 +192,22 @@
 </nav>
 
 <script>
-    const IMAGE_REFRESH_INTERVAL = 60_000;
 
-    async function refreshPluginImage(image) {
-        const baseUrl = image.dataset.src;
-
-        try {
-            const refreshUrl =
-                `${baseUrl}?t=${Date.now()}`;
-
-            const response = await fetch(refreshUrl, {
-                cache: "no-store"
-            });
-
-            if (!response.ok) {
-                console.error(
-                    `Failed to refresh ${baseUrl}:`,
-                    response.status
-                );
-                return;
-            }
-
-            const blob = await response.blob();
-            const objectUrl = URL.createObjectURL(blob);
-
-            const oldObjectUrl = image.dataset.objectUrl;
-
-            image.onload = () => {
-                if (oldObjectUrl) {
-                    URL.revokeObjectURL(oldObjectUrl);
-                }
-            };
-
-            image.dataset.objectUrl = objectUrl;
-            image.src = objectUrl;
-
-            console.log(
-                `Refreshed ${baseUrl} at`,
-                new Date().toLocaleTimeString()
-            );
-
-        } catch (error) {
-            console.error(
-                `Error refreshing ${baseUrl}:`,
-                error
-            );
-        }
-    }
+    const IMAGE_REFRESH_INTERVAL = 10_000;
 
     function refreshPluginImages() {
+        const timestamp = Date.now();
+
         document
             .querySelectorAll(".plugin-display")
-            .forEach(refreshPluginImage);
+            .forEach((image) => {
+                const baseUrl = image.dataset.src;
+
+                image.src = `${baseUrl}?t=${timestamp}`;
+            });
     }
 
-    setTimeout(refreshPluginImages, 5000);
+    setTimeout(refreshPluginImages, 2000);
 
     setInterval(
         refreshPluginImages,
