@@ -30,6 +30,8 @@
 
             overflow: hidden;
 
+            overscroll-behavior: none;
+
             background: #000;
         }
 
@@ -52,6 +54,9 @@
             scroll-behavior: smooth;
 
             scrollbar-width: none;
+
+            touch-action: pan-x;
+            -webkit-overflow-scrolling: touch;
         }
 
         .pages::-webkit-scrollbar {
@@ -101,6 +106,10 @@
 
             object-fit: fill;
             object-position: center;
+
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         .page-indicators {
