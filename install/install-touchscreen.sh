@@ -562,6 +562,7 @@ install_app_service
 configure_touchscreen_device
 install_dashboard_launcher
 configure_dashboard_launcher
+configure_dashboard_autostart
 
 echo "Update JS and CSS files"
 bash $SCRIPT_DIR/update_vendors.sh > /dev/null
