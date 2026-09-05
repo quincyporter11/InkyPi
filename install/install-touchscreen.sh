@@ -414,7 +414,7 @@ install_touchscreen_dependencies() {
     echo_success "\tTouchscreen dashboard dependencies installed."
 }
 
-# Configure Touchscreen ### NO LONGER USED ###
+# Configure Touchscreen
 configure_touchscreen() {
     echo "Configuring native touchscreen input."
 
@@ -559,6 +559,7 @@ fi
 install_app_service
 
 # Touchscreen configuration
+configure_touchscreen
 configure_touchscreen_device
 install_dashboard_launcher
 configure_dashboard_launcher
